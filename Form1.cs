@@ -472,18 +472,22 @@ namespace _19110173_NguyenMinhChien_Paint
             this.bThick = false;
             this.bStyle = false;
 
-            if (this.bClear == true)
+            if (isSelected == true)
             {
                 DialogResult mess = MessageBox.Show("Xoá hình này", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (mess == DialogResult.Yes)
                 {
-                    if (this.tempMoveIndex != -1)
+                    if (this.lGraph.Count == 1)
                     {
-                        this.lGraph.RemoveAt(this.tempMoveIndex);
+                        this.btnClear_Click(sender, e);
                     }
                     else
                     {
-                        MessageBox.Show("Vui lòng chọn hình để xoá");
+                        this.lGraph.RemoveAt(this.tempMoveIndex);
+                        this.tempMoveIndex = -1;
+                        this.isSelected = false;
+
+                        this.bClear = false;
                     }
                 }
 
@@ -520,6 +524,7 @@ namespace _19110173_NguyenMinhChien_Paint
             this.bColor = false;
             this.bThick = false;
             this.bStyle = false;
+            this.isSelected = false;
 
             this.lGraph.Clear();
             this.plMain.Refresh();
@@ -1047,7 +1052,14 @@ namespace _19110173_NguyenMinhChien_Paint
                 DialogResult mess = MessageBox.Show("Xoá hình này", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (mess == DialogResult.Yes)
                 {
-                    this.lGraph.RemoveAt(i);
+                    if (this.lGraph.Count == 1)
+                    {
+                        this.btnClear_Click(sender, e);
+                    }
+                    else
+                    {
+                        this.lGraph.RemoveAt(i);
+                    }
                 }
 
                 this.plMain.Cursor = Cursors.Arrow;
