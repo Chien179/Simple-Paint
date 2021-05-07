@@ -472,21 +472,23 @@ namespace _19110173_NguyenMinhChien_Paint
             this.bThick = false;
             this.bStyle = false;
 
-            if (this.bClear == true)
+            if (isSelected == true)
             {
                 DialogResult mess = MessageBox.Show("Xoá hình này", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (mess == DialogResult.Yes)
                 {
-                    if (this.tempMoveIndex != -1)
+                    if (this.lGraph.Count == 1)
                     {
-                        this.lGraph.RemoveAt(this.tempMoveIndex);
+                        this.btnClear_Click(sender, e);
                     }
                     else
                     {
-                        MessageBox.Show("Vui lòng chọn hình để xoá");
+                        this.lGraph.RemoveAt(this.tempMoveIndex);
                     }
+                    this.isSelected = false;
                 }
 
+                this.bClear = false;
                 this.plMain.Cursor = Cursors.Arrow;
                 this.MoveIndex = -1;
 
@@ -520,6 +522,7 @@ namespace _19110173_NguyenMinhChien_Paint
             this.bColor = false;
             this.bThick = false;
             this.bStyle = false;
+            this.isSelected = false;
 
             this.lGraph.Clear();
             this.plMain.Refresh();
@@ -607,7 +610,6 @@ namespace _19110173_NguyenMinhChien_Paint
             mygraph.doday = thick;
             mygraph.kieuve = myDashstyle[indexDashstyle];
             mygraph.kieuhinh = kieuhinh;
-
 
             if ((this.bCurve == false && this.checkCurve == true) || (this.bPolygon == false && this.checkPolygon == true) || (this.bPolygons == false && this.checkPolygons == true))
             {
@@ -808,15 +810,15 @@ namespace _19110173_NguyenMinhChien_Paint
                         int pX = e.Location.X - this.prevPoint.X;
                         int pY = e.Location.Y - this.prevPoint.Y;
 
-                        this.lGraph[MoveIndex].p1.X += pX;
-                        this.lGraph[MoveIndex].p1.Y += pY;
-                        this.lGraph[MoveIndex].p4.X += pX;
-                        this.lGraph[MoveIndex].p4.Y += pY;
+                        this.lGraph[this.MoveIndex].p1.X += pX;
+                        this.lGraph[this.MoveIndex].p1.Y += pY;
+                        this.lGraph[this.MoveIndex].p4.X += pX;
+                        this.lGraph[this.MoveIndex].p4.Y += pY;
 
-                        for (int i = 0; i < this.lGraph[MoveIndex].p.Length; i++)
+                        for (int i = 0; i < this.lGraph[this.MoveIndex].p.Length; i++)
                         {
-                            this.lGraph[MoveIndex].p[i].X += pX;
-                            this.lGraph[MoveIndex].p[i].Y += pY;
+                            this.lGraph[this.MoveIndex].p[i].X += pX;
+                            this.lGraph[this.MoveIndex].p[i].Y += pY;
                         }
 
                         this.prevPoint = e.Location;
@@ -881,10 +883,10 @@ namespace _19110173_NguyenMinhChien_Paint
                     {
                         int pX = e.Location.X - this.prevPoint.X;
                         int pY = e.Location.Y - this.prevPoint.Y;
-                        for (int i = 0; i < this.lGraph[MoveIndex].p.Length; i++)
+                        for (int i = 0; i < this.lGraph[this.MoveIndex].p.Length; i++)
                         {
-                            this.lGraph[MoveIndex].p[i].X += pX;
-                            this.lGraph[MoveIndex].p[i].Y += pY;
+                            this.lGraph[this.MoveIndex].p[i].X += pX;
+                            this.lGraph[this.MoveIndex].p[i].Y += pY;
                         }
 
                         this.prevPoint = e.Location;
@@ -1016,6 +1018,22 @@ namespace _19110173_NguyenMinhChien_Paint
             }
         }
 
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            DialogResult exit = MessageBox.Show("Ở lại chơi xíu đi mà :((", "Thoát", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1, MessageBoxOptions.RightAlign);
+
+            if (exit == DialogResult.Yes)
+            {
+                MessageBox.Show("Cảm ơn bạn", "hihi");
+
+                e.Cancel = true;
+            }
+            else
+            {
+                MessageBox.Show("Bye Bye", "huhu");
+            }
+        }
+
         #endregion
 
         #region Function
@@ -1047,11 +1065,22 @@ namespace _19110173_NguyenMinhChien_Paint
                 DialogResult mess = MessageBox.Show("Xoá hình này", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (mess == DialogResult.Yes)
                 {
-                    this.lGraph.RemoveAt(i);
+                    if (this.lGraph.Count == 1)
+                    {
+                        this.btnClear_Click(sender, e);
+                    }
+                    else
+                    {
+                        this.lGraph.RemoveAt(i);
+                    }
+                }
+                else
+                {
+                    this.isStart = false;
                 }
 
                 this.plMain.Cursor = Cursors.Arrow;
-                MoveIndex = -1;
+                this.MoveIndex = -1;
                 return false;
             }
 
